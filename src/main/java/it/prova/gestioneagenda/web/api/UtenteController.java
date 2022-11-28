@@ -42,9 +42,5 @@ public class UtenteController {
 				utenteLoggato.getUsername(), utenteLoggato.getEmail(), ruoli));
 	}
 	
-	@GetMapping
-	public List<AgendaDTO> getAll() {
-		return AgendaDTO.createAgendaDTOListFromModelList(agendaService.listAllElements(true), true);
-	}
 	
 }
