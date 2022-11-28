@@ -1,6 +1,7 @@
 package it.prova.gestioneagenda.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,9 +25,9 @@ public class Agenda {
 	@Column(name = "descrizione")
 	private String descrizione;
 	@Column(name = "dataorainizio")
-	private LocalDate dataOraInizio;
+	private LocalDateTime dataOraInizio;
 	@Column(name = "dataorafine")
-	private LocalDate dataOraFine;
+	private LocalDateTime dataOraFine;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "utente_id")
@@ -34,13 +35,21 @@ public class Agenda {
 	
 	public Agenda() {}
 
-	public Agenda(Long id, String descrizione, LocalDate dataOraInizio, LocalDate dataOraFine, Utente utente) {
+	public Agenda(Long id, String descrizione, LocalDateTime dataOraInizio, LocalDateTime dataOraFine, Utente utente) {
 		super();
 		this.id = id;
 		this.descrizione = descrizione;
 		this.dataOraInizio = dataOraInizio;
 		this.dataOraFine = dataOraFine;
 		this.utente = utente;
+	}
+	
+	public Agenda(Long id, String descrizione, LocalDateTime dataOraInizio, LocalDateTime dataOraFine) {
+		super();
+		this.id = id;
+		this.descrizione = descrizione;
+		this.dataOraInizio = dataOraInizio;
+		this.dataOraFine = dataOraFine;
 	}
 
 	public Long getId() {
@@ -59,19 +68,19 @@ public class Agenda {
 		this.descrizione = descrizione;
 	}
 
-	public LocalDate getDataOraInizio() {
+	public LocalDateTime getDataOraInizio() {
 		return dataOraInizio;
 	}
 
-	public void setDataOraInizio(LocalDate dataOraInizio) {
+	public void setDataOraInizio(LocalDateTime dataOraInizio) {
 		this.dataOraInizio = dataOraInizio;
 	}
 
-	public LocalDate getDataOraFine() {
+	public LocalDateTime getDataOraFine() {
 		return dataOraFine;
 	}
 
-	public void setDataOraFine(LocalDate dataOraFine) {
+	public void setDataOraFine(LocalDateTime dataOraFine) {
 		this.dataOraFine = dataOraFine;
 	}
 
