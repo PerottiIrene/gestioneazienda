@@ -21,5 +21,8 @@ public interface AgendaService {
 	List<Agenda> findByExample(Agenda example);
 
 	List<Agenda> findByDescrizione(String descrizione);
+	
+	List<Agenda> agendeByUtente();
+	
 
 }

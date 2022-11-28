@@ -51,6 +51,21 @@ public class Agenda {
 		this.dataOraInizio = dataOraInizio;
 		this.dataOraFine = dataOraFine;
 	}
+	
+	public Agenda(String descrizione, LocalDateTime dataOraInizio, LocalDateTime dataOraFine, Utente utente) {
+		super();
+		this.descrizione = descrizione;
+		this.dataOraInizio = dataOraInizio;
+		this.dataOraFine = dataOraFine;
+		this.utente = utente;
+	}
+	
+	public Agenda(String descrizione, LocalDateTime dataOraInizio, LocalDateTime dataOraFine) {
+		super();
+		this.descrizione = descrizione;
+		this.dataOraInizio = dataOraInizio;
+		this.dataOraFine = dataOraFine;
+	}
 
 	public Long getId() {
 		return id;

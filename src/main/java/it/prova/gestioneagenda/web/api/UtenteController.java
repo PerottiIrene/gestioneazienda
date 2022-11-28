@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.prova.gestioneagenda.dto.AgendaDTO;
 import it.prova.gestioneagenda.model.Utente;
 import it.prova.gestioneagenda.security.dto.UtenteInfoJWTResponseDTO;
+import it.prova.gestioneagenda.service.AgendaService;
 import it.prova.gestioneagenda.service.UtenteService;
 
 @RestController
@@ -20,6 +22,9 @@ public class UtenteController {
 
 	@Autowired
 	private UtenteService utenteService;
+	
+	@Autowired
+	private AgendaService agendaService;
 
 	@GetMapping(value = "/userInfo")
 	public ResponseEntity<UtenteInfoJWTResponseDTO> getUserInfo() {
@@ -36,4 +41,10 @@ public class UtenteController {
 		return ResponseEntity.ok(new UtenteInfoJWTResponseDTO(utenteLoggato.getNome(), utenteLoggato.getCognome(),
 				utenteLoggato.getUsername(), utenteLoggato.getEmail(), ruoli));
 	}
+	
+	@GetMapping
+	public List<AgendaDTO> getAll() {
+		return AgendaDTO.createAgendaDTOListFromModelList(agendaService.listAllElements(true), true);
+	}
+	
 }
