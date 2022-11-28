@@ -87,19 +87,7 @@ public class GestioneagendaApplication implements CommandLineRunner{
 			utenteServiceInstance.changeUserAbilitation(classicUser2.getId());
 		}
 		
-		Agenda agendaAdmin=new Agenda("agendaAdmin",LocalDateTime.of(2022,Month.JULY,28,19,30,35),
-				LocalDateTime.of(2022,Month.SEPTEMBER,18,19,30,35));
-		agendaAdmin.setUtente(utenteServiceInstance.findByUsername("admin"));
-		if(agendaService.findByDescrizione(agendaAdmin.getDescrizione()).isEmpty()) {
-			agendaService.inserisciNuovo(agendaAdmin);
-		}
-		
-		Agenda agendaUser=new Agenda("agendaUser",LocalDateTime.of(2022,Month.JULY,30,19,30,35),
-				LocalDateTime.of(2022,Month.SEPTEMBER,18,19,30,35));
-		agendaUser.setUtente(utenteServiceInstance.findByUsername("user"));
-		if(agendaService.findByDescrizione(agendaUser.getDescrizione()).isEmpty()) {
-			agendaService.inserisciNuovo(agendaUser);
-		}
+		agendaService.firstInstert();
 		
 	}
 

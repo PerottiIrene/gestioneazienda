@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import it.prova.gestioneagenda.model.Ruolo;
 
-
 public class RuoloDTO {
 
 	private Long id;

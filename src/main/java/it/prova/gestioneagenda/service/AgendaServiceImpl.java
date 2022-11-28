@@ -1,5 +1,7 @@
 package it.prova.gestioneagenda.service;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +34,6 @@ public class AgendaServiceImpl implements AgendaService{
 
 	@Override
 	public Agenda caricaSingoloElemento(Long id) {
-		
-		String username=SecurityContextHolder.getContext().getAuthentication().getName();
-		Utente utenteInSessione=utenteService.findByUsername(username);
 		return repository.findById(id).orElse(null);
 	}
 
@@ -45,11 +44,19 @@ public class AgendaServiceImpl implements AgendaService{
 
 	@Override
 	public Agenda aggiorna(Agenda agendaInstance) {
+		
+		String username=SecurityContextHolder.getContext().getAuthentication().getName();
+		Utente utenteInSessione=utenteService.findByUsername(username);
+		agendaInstance.setUtente(utenteInSessione);
 		return repository.save(agendaInstance);
 	}
 
 	@Override
 	public Agenda inserisciNuovo(Agenda agendaInstance) {
+		
+		String username=SecurityContextHolder.getContext().getAuthentication().getName();
+		Utente utenteInSessione=utenteService.findByUsername(username);
+		agendaInstance.setUtente(utenteInSessione);
 		return repository.save(agendaInstance);
 	}
 
@@ -74,6 +81,24 @@ public class AgendaServiceImpl implements AgendaService{
 		String username=SecurityContextHolder.getContext().getAuthentication().getName();
 		Utente utenteInSessione=utenteService.findByUsername(username);
 		return (List<Agenda>) repository.agendeUtente(utenteInSessione.getId());
+	}
+
+	@Override
+	public void firstInstert() {
+		Agenda agendaAdmin=new Agenda("agendaAdmin",LocalDateTime.of(2022,Month.JULY,28,19,30,35),
+				LocalDateTime.of(2022,Month.SEPTEMBER,18,19,30,35));
+		agendaAdmin.setUtente(utenteService.findByUsername("admin"));
+		if(findByDescrizione(agendaAdmin.getDescrizione()).isEmpty()) {
+			repository.save(agendaAdmin);
+		}
+		
+		Agenda agendaUser=new Agenda("agendaUser",LocalDateTime.of(2022,Month.JULY,30,19,30,35),
+				LocalDateTime.of(2022,Month.SEPTEMBER,18,19,30,35));
+		agendaUser.setUtente(utenteService.findByUsername("user"));
+		if(findByDescrizione(agendaUser.getDescrizione()).isEmpty()) {
+			repository.save(agendaUser);
+		}
+		
 	}
 
 }

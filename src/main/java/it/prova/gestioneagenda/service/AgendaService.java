@@ -24,5 +24,6 @@ public interface AgendaService {
 	
 	List<Agenda> agendeByUtente();
 	
-
+	void firstInstert();
+	
 }
