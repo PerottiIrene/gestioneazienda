@@ -15,6 +15,7 @@ import it.prova.gestioneagenda.model.Ruolo;
 import it.prova.gestioneagenda.model.Utente;
 import it.prova.gestioneagenda.repository.agenda.AgendaRepository;
 import it.prova.gestioneagenda.security.JWTAuthEntryPoint;
+import it.prova.gestioneagenda.web.api.exception.OperazioneNegataException;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,7 +26,7 @@ public class AgendaServiceImpl implements AgendaService{
 	
 	@Autowired
 	private UtenteService utenteService;
-
+	
 	@Override
 	public List<Agenda> listAllElements(boolean eager) {
 		if (eager)
@@ -45,6 +46,7 @@ public class AgendaServiceImpl implements AgendaService{
 	}
 
 	@Override
+	@Transactional
 	public Agenda aggiorna(Agenda agendaInstance) {
 		
 		String username=SecurityContextHolder.getContext().getAuthentication().getName();
@@ -54,6 +56,7 @@ public class AgendaServiceImpl implements AgendaService{
 	}
 
 	@Override
+	@Transactional
 	public Agenda inserisciNuovo(Agenda agendaInstance) {
 		
 		String username=SecurityContextHolder.getContext().getAuthentication().getName();
@@ -63,7 +66,15 @@ public class AgendaServiceImpl implements AgendaService{
 	}
 
 	@Override
+	@Transactional
 	public void rimuovi(Long idToRemove) {
+		
+		String username=SecurityContextHolder.getContext().getAuthentication().getName();
+		Utente utenteInSessione=utenteService.findByUsername(username);
+		Agenda agendaDaRimuovere=repository.findSingleAgendaEager(idToRemove);
+		if(agendaDaRimuovere.getUtente().getId() != utenteInSessione.getId()) {
+			throw new OperazioneNegataException("l'agenda non e' associata a questo utente, non puo' essere rimossa");
+		}
 		repository.deleteById(idToRemove);
 	}
 

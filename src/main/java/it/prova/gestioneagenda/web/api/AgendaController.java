@@ -21,6 +21,7 @@ import it.prova.gestioneagenda.model.Agenda;
 import it.prova.gestioneagenda.service.AgendaService;
 import it.prova.gestioneagenda.web.api.exception.AgendaNotFoundException;
 import it.prova.gestioneagenda.web.api.exception.IdNotNullForInsertException;
+import it.prova.gestioneagenda.web.api.exception.OperazioneNegataException;
 
 @RestController
 @RequestMapping("api/agenda")
@@ -56,7 +57,7 @@ public class AgendaController {
 		Agenda agendaInserito = agendaService.inserisciNuovo(agendaInput.buildAgendaModel());
 		return AgendaDTO.buildAgendaDTOFromModel(agendaInserito, true);
 	}
-	
+
 	@PutMapping("/{id}")
 	public AgendaDTO update(@Valid @RequestBody AgendaDTO agendaInput, @PathVariable(required = true) Long id) {
 		Agenda agenda = agendaService.caricaSingoloElemento(id);
@@ -68,13 +69,18 @@ public class AgendaController {
 		Agenda agendaAggiornato = agendaService.aggiorna(agendaInput.buildAgendaModel());
 		return AgendaDTO.buildAgendaDTOFromModel(agendaAggiornato, false);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable(required = true) Long id) {
-		agendaService.rimuovi(id);
+	public void delete(@PathVariable(required = true) Long id) throws OperazioneNegataException {
+
+		try {
+			agendaService.rimuovi(id);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
-	
+
 	@PostMapping("/search")
 	public List<AgendaDTO> search(@RequestBody AgendaDTO example) {
 		return AgendaDTO.createAgendaDTOListFromModelList(agendaService.findByExample(example.buildAgendaModel()),
